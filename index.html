@@ -14,12 +14,9 @@
             align-items: center;
             padding: 20px;
         }
-        h1 {
-            margin-bottom: 20px;
-        }
         .periodic-table {
             display: grid;
-            grid-template-columns: repeat(18, 60px);
+            grid-template-columns: repeat(18, 65px);
             grid-template-rows: repeat(10, 75px);
             gap: 4px;
         }
@@ -40,24 +37,10 @@
             z-index: 10;
             border-color: #fff;
         }
-        .atomic-number {
-            font-size: 8px;
-            text-align: left;
-        }
-        .symbol {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .name {
-            font-size: 7px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .mass {
-            font-size: 7px;
-            color: #ccc;
-        }
+        .atomic-number { font-size: 8px; text-align: left; }
+        .symbol { font-size: 16px; font-weight: bold; }
+        .name { font-size: 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mass { font-size: 7px; color: #ccc; }
 
         /* Cores por Categoria */
         .nao-metal { background-color: #2e5c31; }
@@ -70,574 +53,46 @@
         .halogenio { background-color: #4a1d68; }
         .lantanideo { background-color: #5c2b57; }
         .actinidio { background-color: #5c2b36; }
-        .empty { border: none; background: transparent; cursor: default; }
     </style>
 </head>
 <body>
 
     <h1>Tabela Periódica dos Elementos</h1>
+    <div class="periodic-table" id="table"></div>
 
-    <div class="periodic-table">
-        <!-- Período 1 -->
-        <div class="element gas-nobre" style="grid-column: 1; grid-row: 1;">
-            <span class="atomic-number">1</span>
-            <span class="symbol">H</span>
-            <span class="name">Hidrogênio</span>
-            <span class="mass">1.008</span>
-        </div>
-        <!-- Espaços vazios linha 1 -->
-        <div class="empty" style="grid-column: span 16; grid-row: 1;"></div>
-        <div class="element gas-nobre" style="grid-column: 18; grid-row: 1;">
-            <span class="atomic-number">2</span>
-            <span class="symbol">He</span>
-            <span class="name">Hélio</span>
-            <span class="mass">4.0026</span>
-        </div>
+    <script>
+        // Dados compactados de todos os 118 elementos [Nº Atômico, Símbolo, Nome, Massa, Coluna, Linha, Classe]
+        const elements = [
+            [1,"H","Hidrogênio","1.008",1,1,"nao-metal"],[2,"He","Hélio","4.0026",18,1,"gas-nobre"],
+            [3,"Li","Lítio","6.94",1,2,"metal-alcalino"],[4,"Be","Berílio","9.0122",2,2,"metal-alcalino-terroso"],[5,"B","Boro","10.81",13,2,"semimetal"],[6,"C","Carbono","12.011",14,2,"nao-metal"],[7,"N","Nitrogênio","14.007",15,2,"nao-metal"],[8,"O","Oxigênio","15.999",16,2,"nao-metal"],[9,"F","Flúor","18.998",17,2,"halogenio"],[10,"Ne","Neônio","20.180",18,2,"gas-nobre"],
+            [11,"Na","Sódio","22.990",1,3,"metal-alcalino"],[12,"Mg","Magnésio","24.305",2,3,"metal-alcalino-terroso"],[13,"Al","Alumínio","26.982",13,3,"outros-metais"],[14,"Si","Silício","28.085",14,3,"semimetal"],[15,"P","Fósforo","30.974",15,3,"nao-metal"],[16,"S","Enxofre","32.06",16,3,"nao-metal"],[17,"Cl","Cloro","35.45",17,3,"halogenio"],[18,"Ar","Argônio","39.948",18,3,"gas-nobre"],
+            [19,"K","Potássio","39.098",1,4,"metal-alcalino"],[20,"Ca","Cálcio","40.078",2,4,"metal-alcalino-terroso"],[21,"Sc","Escândio","44.956",3,4,"metal-transicao"],[22,"Ti","Titânio","47.867",4,4,"metal-transicao"],[23,"V","Vanádio","50.942",5,4,"metal-transicao"],[24,"Cr","Cromo","51.996",6,4,"metal-transicao"],[25,"Mn","Manganês","54.938",7,4,"metal-transicao"],[26,"Fe","Ferro","55.845",8,4,"metal-transicao"],[27,"Co","Cobalto","58.933",9,4,"metal-transicao"],[28,"Ni","Níquel","58.693",10,4,"metal-transicao"],[29,"Cu","Cobre","63.546",11,4,"metal-transicao"],[30,"Zn","Zinco","65.38",12,4,"metal-transicao"],[31,"Ga","Gálio","69.723",13,4,"outros-metais"],[32,"Ge","Germânio","72.630",14,4,"semimetal"],[33,"As","Arsênio","74.922",15,4,"semimetal"],[34,"Se","Selênio","78.971",16,4,"nao-metal"],[35,"Br","Bromo","79.904",17,4,"halogenio"],[36,"Kr","Criptônio","83.798",18,4,"gas-nobre"],
+            [37,"Rb","Rubídio","85.468",1,5,"metal-alcalino"],[38,"Sr","Estrôncio","87.62",2,5,"metal-alcalino-terroso"],[39,"Y","Ítrio","88.906",3,5,"metal-transicao"],[40,"Zr","Zircônio","91.224",4,5,"metal-transicao"],[41,"Nb","Nióbio","92.906",5,5,"metal-transicao"],[42,"Mo","Molibidênio","95.95",6,5,"metal-transicao"],[43,"Tc","Tecnécio","(98)",7,5,"metal-transicao"],[44,"Ru","Rutênio","101.07",8,5,"metal-transicao"],[45,"Rh","Ródio","102.91",9,5,"metal-transicao"],[46,"Pd","Paládio","106.42",10,5,"metal-transicao"],[47,"Ag","Prata","107.87",11,5,"metal-transicao"],[48,"Cd","Cádmio","112.41",12,5,"metal-transicao"],[49,"In","Índio","114.82",13,5,"outros-metais"],[50,"Sn","Estanho","118.71",14,5,"outros-metais"],[51,"Sb","Antimônio","121.76",15,5,"semimetal"],[52,"Te","Telúrio","127.60",16,5,"semimetal"],[53,"I","Iodo","126.90",17,5,"halogenio"],[54,"Xe","Xenônio","131.29",18,5,"gas-nobre"],
+            [55,"Cs","Césio","132.91",1,6,"metal-alcalino"],[56,"Ba","Bário","137.33",2,6,"metal-alcalino-terroso"],[57,"La","Lantânio","138.91",4,9,"lantanideo"],[58,"Ce","Cério","140.12",5,9,"lantanideo"],[59,"Pr","Praseodímio","140.91",6,9,"lantanideo"],[60,"Nd","Neodímio","144.24",7,9,"lantanideo"],[61,"Pm","Promécio","(145)",8,9,"lantanideo"],[62,"Sm","Samário","150.36",9,9,"lantanideo"],[63,"Eu","Európio","151.96",10,9,"lantanideo"],[64,"Gd","Gadolínio","157.25",11,9,"lantanideo"],[65,"Tb","Térbio","158.93",12,9,"lantanideo"],[66,"Dy","Disprósio","162.50",13,9,"lantanideo"],[67,"Ho","Hólmio","164.93",14,9,"lantanideo"],[68,"Er","Érbio","167.26",15,9,"lantanideo"],[69,"Tm","Túlio","168.93",16,9,"lantanideo"],[70,"Yb","Itérbio","173.05",17,9,"lantanideo"],[71,"Lu","Lutécio","174.97",18,9,"lantanideo"],[72,"Hf","Háfnio","178.49",4,6,"metal-transicao"],[73,"Ta","Tântalo","180.95",5,6,"metal-transicao"],[74,"W","Tungstênio","183.84",6,6,"metal-transicao"],[75,"Re","Rênio","186.21",7,6,"metal-transicao"],[76,"Os","Ósmio","190.23",8,6,"metal-transicao"],[77,"Ir","Irídio","192.22",9,6,"metal-transicao"],[78,"Pt","Platina","195.08",10,6,"metal-transicao"],[79,"Au","Ouro","196.97",11,6,"metal-transicao"],[80,"Hg","Mercúrio","200.59",12,6,"metal-transicao"],[81,"Tl","Tálio","204.38",13,6,"outros-metais"],[82,"Pb","Chumbo","207.2",14,6,"outros-metais"],[83,"Bi","Bismuto","208.98",15,6,"outros-metais"],[84,"Po","Polônio","(209)",16,6,"semimetal"],[85,"At","Astato","(210)",17,6,"halogenio"],[86,"Rn","Radônio","(222)",18,6,"gas-nobre"],
+            [87,"Fr","Frâncio","(223)",1,7,"metal-alcalino"],[88,"Ra","Rádio","(226)",2,7,"metal-alcalino-terroso"],[89,"Ac","Actínio","(227)",4,10,"actinidio"],[90,"Th","Tório","232.04",5,10,"actinidio"],[91,"Pa","Protactínio","231.04",6,10,"actinidio"],[92,"U","Urânio","238.03",7,10,"actinidio"],[93,"Np","Netúnio","(237)",8,10,"actinidio"],[94,"Pu","Plutônio","(244)",9,10,"actinidio"],[95,"Am","Amerício","(243)",10,10,"actinidio"],[96,"Cm","Cúrio","(247)",11,10,"actinidio"],[97,"Bk","Berquélio","(247)",12,10,"actinidio"],[98,"Cf","Califórnio","(251)",13,10,"actinidio"],[99,"Es","Einstênio","(252)",14,10,"actinidio"],[100,"Fm","Férmio","(257)",15,10,"actinidio"],[101,"Md","Mendelévio","(258)",16,10,"actinidio"],[102,"No","Nobélio","(259)",17,10,"actinidio"],[103,"Lr","Laurêncio","(262)",18,10,"actinidio"],[104,"Rf","Ruthenfórdio","(267)",4,7,"metal-transicao"],[105,"Db","Dúbnio","(268)",5,7,"metal-transicao"],[106,"Sg","Seabórgio","(269)",6,7,"metal-transicao"],[107,"Bh","Bório","(270)",7,7,"metal-transicao"],[108,"Hs","Hássio","(269)",8,7,"metal-transicao"],[109,"Mt","Meitnério","(278)",9,7,"metal-transicao"],[110,"Ds","Darmstádio","(281)",10,7,"metal-transicao"],[111,"Rg","Roentgênio","(282)",11,7,"metal-transicao"],[112,"Cn","Copernício","(285)",12,7,"metal-transicao"],[113,"Nh","Nhônio","(286)",13,7,"outros-metais"],[114,"Fl","Fleróvio","(289)",14,7,"outros-metais"],[115,"Mc","Moscóvio","(290)",15,7,"outros-metais"],[116,"Lv","Livermório","(293)",16,7,"outros-metais"],[117,"Ts","Tenesso","(294)",17,7,"halogenio"],[118,"Og","Oganessônio","(294)",18,7,"gas-nobre"]
+        ];
 
-        <!-- Período 2 -->
-        <div class="element metal-alcalino" style="grid-column: 1; grid-row: 2;">
-            <span class="atomic-number">3</span>
-            <span class="symbol">Li</span>
-            <span class="name">Lítio</span>
-            <span class="mass">6.94</span>
-        </div>
-        <div class="element metal-alcalino-terroso" style="grid-column: 2; grid-row: 2;">
-            <span class="atomic-number">4</span>
-            <span class="symbol">Be</span>
-            <span class="name">Berílio</span>
-            <span class="mass">9.0122</span>
-        </div>
-        <div class="empty" style="grid-column: span 10; grid-row: 2;"></div>
-        <div class="element semimetal" style="grid-column: 13; grid-row: 2;">
-            <span class="atomic-number">5</span>
-            <span class="symbol">B</span>
-            <span class="name">Boro</span>
-            <span class="mass">10.81</span>
-        </div>
-        <div class="element nao-metal" style="grid-column: 14; grid-row: 2;">
-            <span class="atomic-number">6</span>
-            <span class="symbol">C</span>
-            <span class="name">Carbono</span>
-            <span class="mass">12.011</span>
-        </div>
-        <div class="element nao-metal" style="grid-column: 15; grid-row: 2;">
-            <span class="atomic-number">7</span>
-            <span class="symbol">N</span>
-            <span class="name">Nitrogênio</span>
-            <span class="mass">14.007</span>
-        </div>
-        <div class="element nao-metal" style="grid-column: 16; grid-row: 2;">
-            <span class="atomic-number">8</span>
-            <span class="symbol">O</span>
-            <span class="name">Oxigênio</span>
-            <span class="mass">15.999</span>
-        </div>
-        <div class="element halogenio" style="grid-column: 17; grid-row: 2;">
-            <span class="atomic-number">9</span>
-            <span class="symbol">F</span>
-            <span class="name">Flúor</span>
-            <span class="mass">18.998</span>
-        </div>
-        <div class="element gas-nobre" style="grid-column: 18; grid-row: 2;">
-            <span class="atomic-number">10</span>
-            <span class="symbol">Ne</span>
-            <span class="name">Neônio</span>
-            <span class="mass">20.180</span>
-        </div>
+        // Adiciona as caixas indicativas de grupo La-Lu e Ac-Lr nas colunas vazias
+        elements.push(["57-71","La-Lu","Lantanídeos","-",3,6,"lantanideo"]);
+        elements.push(["89-103","Ac-Lr","Actinídeos","-",3,7,"actinidio"]);
 
-                <!-- Período 3 -->
-        <div class="element metal-alcalino" style="grid-column: 1; grid-row: 3;">
-            <span class="atomic-number">11</span>
-            <span class="symbol">Na</span>
-            <span class="name">Sódio</span>
-            <span class="mass">22.990</span>
-        </div>
-        <div class="element metal-alcalino-terroso" style="grid-column: 2; grid-row: 3;">
-            <span class="atomic-number">12</span>
-            <span class="symbol">Mg</span>
-            <span class="name">Magnésio</span>
-            <span class="mass">24.305</span>
-        </div>
-        <div class="empty" style="grid-column: span 10; grid-row: 3;"></div>
-        <div class="element outros-metais" style="grid-column: 13; grid-row: 3;">
-            <span class="atomic-number">13</span>
-            <span class="symbol">Al</span>
-            <span class="name">Alumínio</span>
-            <span class="mass">26.982</span>
-        </div>
-        <div class="element semimetal" style="grid-column: 14; grid-row: 3;">
-            <span class="atomic-number">14</span>
-            <span class="symbol">Si</span>
-            <span class="name">Silício</span>
-            <span class="mass">28.085</span>
-        </div>
-        <div class="element nao-metal" style="grid-column: 15; grid-row: 3;">
-            <span class="atomic-number">15</span>
-            <span class="symbol">P</span>
-            <span class="name">Fósforo</span>
-            <span class="mass">30.974</span>
-        </div>
-        <div class="element nao-metal" style="grid-column: 16; grid-row: 3;">
-            <span class="atomic-number">16</span>
-            <span class="symbol">S</span>
-            <span class="name">Enxofre</span>
-            <span class="mass">32.06</span>
-        </div>
-        <div class="element halogenio" style="grid-column: 17; grid-row: 3;">
-            <span class="atomic-number">17</span>
-            <span class="symbol">Cl</span>
-            <span class="name">Cloro</span>
-            <span class="mass">35.45</span>
-        </div>
-        <div class="element gas-nobre" style="grid-column: 18; grid-row: 3;">
-            <span class="atomic-number">18</span>
-            <span class="symbol">Ar</span>
-            <span class="name">Argônio</span>
-            <span class="mass">39.948</span>
-        </div>
-
-        <!-- Período 4 -->
-        <div class="element metal-alcalino" style="grid-column: 1; grid-row: 4;">
-            <span class="atomic-number">19</span>
-            <span class="symbol">K</span>
-            <span class="name">Potássio</span>
-            <span class="mass">39.098</span>
-        </div>
-        <div class="element metal-alcalino-terroso" style="grid-column: 2; grid-row: 4;">
-            <span class="atomic-number">20</span>
-            <span class="symbol">Ca</span>
-            <span class="name">Cálcio</span>
-            <span class="mass">40.078</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 3; grid-row: 4;">
-            <span class="atomic-number">21</span>
-            <span class="symbol">Sc</span>
-            <span class="name">Escândio</span>
-            <span class="mass">44.956</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 4; grid-row: 4;">
-            <span class="atomic-number">22</span>
-            <span class="symbol">Ti</span>
-            <span class="name">Titânio</span>
-            <span class="mass">47.867</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 5; grid-row: 4;">
-            <span class="atomic-number">23</span>
-            <span class="symbol">V</span>
-            <span class="name">Vanádio</span>
-            <span class="mass">50.942</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 6; grid-row: 4;">
-            <span class="atomic-number">24</span>
-            <span class="symbol">Cr</span>
-            <span class="name">Cromo</span>
-            <span class="mass">51.996</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 7; grid-row: 4;">
-            <span class="atomic-number">25</span>
-            <span class="symbol">Mn</span>
-            <span class="name">Manganês</span>
-            <span class="mass">54.938</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 8; grid-row: 4;">
-            <span class="atomic-number">26</span>
-            <span class="symbol">Fe</span>
-            <span class="name">Ferro</span>
-            <span class="mass">55.845</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 9; grid-row: 4;">
-            <span class="atomic-number">27</span>
-            <span class="symbol">Co</span>
-            <span class="name">Cobalto</span>
-            <span class="mass">58.933</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 10; grid-row: 4;">
-            <span class="atomic-number">28</span>
-            <span class="symbol">Ni</span>
-            <span class="name">Níquel</span>
-            <span class="mass">58.693</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 11; grid-row: 4;">
-            <span class="atomic-number">29</span>
-            <span class="symbol">Cu</span>
-            <span class="name">Cobre</span>
-            <span class="mass">63.546</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 12; grid-row: 4;">
-            <span class="atomic-number">30</span>
-            <span class="symbol">Zn</span>
-            <span class="name">Zinco</span>
-            <span class="mass">65.38</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 13; grid-row: 4;">
-            <span class="atomic-number">31</span>
-            <span class="symbol">Ga</span>
-            <span class="name">Gálio</span>
-            <span class="mass">69.723</span>
-        </div>
-        <div class="element semimetal" style="grid-column: 14; grid-row: 4;">
-            <span class="atomic-number">32</span>
-            <span class="symbol">Ge</span>
-            <span class="name">Germânio</span>
-            <span class="mass">72.630</span>
-        </div>
-        <div class="element semimetal" style="grid-column: 15; grid-row: 4;">
-            <span class="atomic-number">33</span>
-            <span class="symbol">As</span>
-            <span class="name">Arsênio</span>
-            <span class="mass">74.922</span>
-        </div>
-        <div class="element nao-metal" style="grid-column: 16; grid-row: 4;">
-            <span class="atomic-number">34</span>
-            <span class="symbol">Se</span>
-            <span class="name">Selênio</span>
-            <span class="mass">78.971</span>
-        </div>
-        <div class="element halogenio" style="grid-column: 17; grid-row: 4;">
-            <span class="atomic-number">35</span>
-            <span class="symbol">Br</span>
-            <span class="name">Bromo</span>
-            <span class="mass">79.904</span>
-        </div>
-        <div class="element gas-nobre" style="grid-column: 18; grid-row: 4;">
-            <span class="atomic-number">36</span>
-            <span class="symbol">Kr</span>
-            <span class="name">Criptônio</span>
-            <span class="mass">83.798</span>
-        </div>
-
-        <!-- Período 5 -->
-        <div class="element metal-alcalino" style="grid-column: 1; grid-row: 5;">
-            <span class="atomic-number">37</span>
-            <span class="symbol">Rb</span>
-            <span class="name">Rubídio</span>
-            <span class="mass">85.468</span>
-        </div>
-        <div class="element metal-alcalino-terroso" style="grid-column: 2; grid-row: 5;">
-            <span class="atomic-number">38</span>
-            <span class="symbol">Sr</span>
-            <span class="name">Estrôncio</span>
-            <span class="mass">87.62</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 3; grid-row: 5;">
-            <span class="atomic-number">39</span>
-            <span class="symbol">Y</span>
-            <span class="name">Ítrio</span>
-            <span class="mass">88.906</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 4; grid-row: 5;">
-            <span class="atomic-number">40</span>
-            <span class="symbol">Zr</span>
-            <span class="name">Zircônio</span>
-            <span class="mass">91.224</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 5; grid-row: 5;">
-            <span class="atomic-number">41</span>
-            <span class="symbol">Nb</span>
-            <span class="name">Nióbio</span>
-            <span class="mass">92.906</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 6; grid-row: 5;">
-            <span class="atomic-number">42</span>
-            <span class="symbol">Mo</span>
-            <span class="name">Molibidênio</span>
-            <span class="mass">95.95</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 7; grid-row: 5;">
-            <span class="atomic-number">43</span>
-            <span class="symbol">Tc</span>
-            <span class="name">Tecnécio</span>
-            <span class="mass">(98)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 8; grid-row: 5;">
-            <span class="atomic-number">44</span>
-            <span class="symbol">Ru</span>
-            <span class="name">Rutênio</span>
-            <span class="mass">101.07</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 9; grid-row: 5;">
-            <span class="atomic-number">45</span>
-            <span class="symbol">Rh</span>
-            <span class="name">Ródio</span>
-            <span class="mass">102.91</span>
-        </div>
-                <!-- Continuação do Período 5 -->
-        <div class="element metal-transicao" style="grid-column: 10; grid-row: 5;">
-            <span class="atomic-number">46</span>
-            <span class="symbol">Pd</span>
-            <span class="name">Paládio</span>
-            <span class="mass">106.42</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 11; grid-row: 5;">
-            <span class="atomic-number">47</span>
-            <span class="symbol">Ag</span>
-            <span class="name">Prata</span>
-            <span class="mass">107.87</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 12; grid-row: 5;">
-            <span class="atomic-number">48</span>
-            <span class="symbol">Cd</span>
-            <span class="name">Cádmio</span>
-            <span class="mass">112.41</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 13; grid-row: 5;">
-            <span class="atomic-number">49</span>
-            <span class="symbol">In</span>
-            <span class="name">Índio</span>
-            <span class="mass">114.82</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 14; grid-row: 5;">
-            <span class="atomic-number">50</span>
-            <span class="symbol">Sn</span>
-            <span class="name">Estanho</span>
-            <span class="mass">118.71</span>
-        </div>
-        <div class="element semimetal" style="grid-column: 15; grid-row: 5;">
-            <span class="atomic-number">51</span>
-            <span class="symbol">Sb</span>
-            <span class="name">Antimônio</span>
-            <span class="mass">121.76</span>
-        </div>
-        <div class="element semimetal" style="grid-column: 16; grid-row: 5;">
-            <span class="atomic-number">52</span>
-            <span class="symbol">Te</span>
-            <span class="name">Telúrio</span>
-            <span class="mass">127.60</span>
-        </div>
-        <div class="element halogenio" style="grid-column: 17; grid-row: 5;">
-            <span class="atomic-number">53</span>
-            <span class="symbol">I</span>
-            <span class="name">Iodo</span>
-            <span class="mass">126.90</span>
-        </div>
-        <div class="element gas-nobre" style="grid-column: 18; grid-row: 5;">
-            <span class="atomic-number">54</span>
-            <span class="symbol">Xe</span>
-            <span class="name">Xenônio</span>
-            <span class="mass">131.29</span>
-        </div>
-
-        <!-- Período 6 -->
-        <div class="element metal-alcalino" style="grid-column: 1; grid-row: 6;">
-            <span class="atomic-number">55</span>
-            <span class="symbol">Cs</span>
-            <span class="name">Césio</span>
-            <span class="mass">132.91</span>
-        </div>
-        <div class="element metal-alcalino-terroso" style="grid-column: 2; grid-row: 6;">
-            <span class="atomic-number">56</span>
-            <span class="symbol">Ba</span>
-            <span class="name">Bário</span>
-            <span class="mass">137.33</span>
-        </div>
-        <div class="element lantanideo" style="grid-column: 3; grid-row: 6;">
-            <span class="atomic-number">57-71</span>
-            <span class="symbol">La-Lu</span>
-            <span class="name">Lantanídeos</span>
-            <span class="mass">-</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 4; grid-row: 6;">
-            <span class="atomic-number">72</span>
-            <span class="symbol">Hf</span>
-            <span class="name">Háfnio</span>
-            <span class="mass">178.49</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 5; grid-row: 6;">
-            <span class="atomic-number">73</span>
-            <span class="symbol">Ta</span>
-            <span class="name">Tântalo</span>
-            <span class="mass">180.95</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 6; grid-row: 6;">
-            <span class="atomic-number">74</span>
-            <span class="symbol">W</span>
-            <span class="name">Tungstênio</span>
-            <span class="mass">183.84</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 7; grid-row: 6;">
-            <span class="atomic-number">75</span>
-            <span class="symbol">Re</span>
-            <span class="name">Rênio</span>
-            <span class="mass">186.21</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 8; grid-row: 6;">
-            <span class="atomic-number">76</span>
-            <span class="symbol">Os</span>
-            <span class="name">Ósmio</span>
-            <span class="mass">190.23</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 9; grid-row: 6;">
-            <span class="atomic-number">77</span>
-            <span class="symbol">Ir</span>
-            <span class="name">Irídio</span>
-            <span class="mass">192.22</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 10; grid-row: 6;">
-            <span class="atomic-number">78</span>
-            <span class="symbol">Pt</span>
-            <span class="name">Platina</span>
-            <span class="mass">195.08</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 11; grid-row: 6;">
-            <span class="atomic-number">79</span>
-            <span class="symbol">Au</span>
-            <span class="name">Ouro</span>
-            <span class="mass">196.97</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 12; grid-row: 6;">
-            <span class="atomic-number">80</span>
-            <span class="symbol">Hg</span>
-            <span class="name">Mercúrio</span>
-            <span class="mass">200.59</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 13; grid-row: 6;">
-            <span class="atomic-number">81</span>
-            <span class="symbol">Tl</span>
-            <span class="name">Tálio</span>
-            <span class="mass">204.38</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 14; grid-row: 6;">
-            <span class="atomic-number">82</span>
-            <span class="symbol">Pb</span>
-            <span class="name">Chumbo</span>
-            <span class="mass">207.2</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 15; grid-row: 6;">
-            <span class="atomic-number">83</span>
-            <span class="symbol">Bi</span>
-            <span class="name">Bismuto</span>
-            <span class="mass">208.98</span>
-        </div>
-        <div class="element semimetal" style="grid-column: 16; grid-row: 6;">
-            <span class="atomic-number">84</span>
-            <span class="symbol">Po</span>
-            <span class="name">Polônio</span>
-            <span class="mass">(209)</span>
-        </div>
-        <div class="element halogenio" style="grid-column: 17; grid-row: 6;">
-            <span class="atomic-number">85</span>
-            <span class="symbol">At</span>
-            <span class="name">Astato</span>
-            <span class="mass">(210)</span>
-        </div>
-        <div class="element gas-nobre" style="grid-column: 18; grid-row: 6;">
-            <span class="atomic-number">86</span>
-            <span class="symbol">Rn</span>
-            <span class="name">Radônio</span>
-            <span class="mass">(222)</span>
-        </div>
-
-        <!-- Período 7 -->
-        <div class="element metal-alcalino" style="grid-column: 1; grid-row: 7;">
-            <span class="atomic-number">87</span>
-            <span class="symbol">Fr</span>
-            <span class="name">Frâncio</span>
-            <span class="mass">(223)</span>
-        </div>
-        <div class="element metal-alcalino-terroso" style="grid-column: 2; grid-row: 7;">
-            <span class="atomic-number">88</span>
-            <span class="symbol">Ra</span>
-            <span class="name">Rádio</span>
-            <span class="mass">(226)</span>
-        </div>
-        <div class="element actinidio" style="grid-column: 3; grid-row: 7;">
-            <span class="atomic-number">89-103</span>
-            <span class="symbol">Ac-Lr</span>
-            <span class="name">Actinídeos</span>
-            <span class="mass">-</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 4; grid-row: 7;">
-            <span class="atomic-number">104</span>
-            <span class="symbol">Rf</span>
-            <span class="name">Ruthenfórdio</span>
-            <span class="mass">(267)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 5; grid-row: 7;">
-            <span class="atomic-number">105</span>
-            <span class="symbol">Db</span>
-            <span class="name">Dúbnio</span>
-            <span class="mass">(268)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 6; grid-row: 7;">
-            <span class="atomic-number">106</span>
-            <span class="symbol">Sg</span>
-            <span class="name">Seabórgio</span>
-            <span class="mass">(269)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 7; grid-row: 7;">
-            <span class="atomic-number">107</span>
-            <span class="symbol">Bh</span>
-            <span class="name">Bório</span>
-            <span class="mass">(270)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 8; grid-row: 7;">
-            <span class="atomic-number">108</span>
-            <span class="symbol">Hs</span>
-            <span class="name">Hássio</span>
-            <span class="mass">(269)</span>
-        </div>
-                <!-- Continuação do Período 7 (Elementos Superpesados) -->
-        <div class="element metal-transicao" style="grid-column: 9; grid-row: 7;">
-            <span class="atomic-number">109</span>
-            <span class="symbol">Mt</span>
-            <span class="name">Meitnério</span>
-            <span class="mass">(278)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 10; grid-row: 7;">
-            <span class="atomic-number">110</span>
-            <span class="symbol">Ds</span>
-            <span class="name">Darmstádio</span>
-            <span class="mass">(281)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 11; grid-row: 7;">
-            <span class="atomic-number">111</span>
-            <span class="symbol">Rg</span>
-            <span class="name">Roentgênio</span>
-            <span class="mass">(282)</span>
-        </div>
-        <div class="element metal-transicao" style="grid-column: 12; grid-row: 7;">
-            <span class="atomic-number">112</span>
-            <span class="symbol">Cn</span>
-            <span class="name">Copernício</span>
-            <span class="mass">(285)</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 13; grid-row: 7;">
-            <span class="atomic-number">113</span>
-            <span class="symbol">Nh</span>
-            <span class="name">Nhônio</span>
-            <span class="mass">(286)</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 14; grid-row: 7;">
-            <span class="atomic-number">114</span>
-            <span class="symbol">Fl</span>
-            <span class="name">Fleróvio</span>
-            <span class="mass">(289)</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 15; grid-row: 7;">
-            <span class="atomic-number">115</span>
-            <span class="symbol">Mc</span>
-            <span class="name">Moscóvio</span>
-            <span class="mass">(290)</span>
-        </div>
-        <div class="element outros-metais" style="grid-column: 16; grid-row: 7;">
-            <span class="atomic-number">116</span>
-            <span class="symbol">Lv</span>
-            <span class="name">Livermório</span>
-            <span class="mass">(293)</span>
-        </div>
-        <div class="element halogenio" style="grid-column: 17; grid-row: 7;">
-            <span class="atomic-number">117</span>
-            <span class="symbol">Ts</span>
-            <span class="name">Tenesso</span>
-            <span class="mass">(294)</span>
-        </div>
-        <div class="element gas-nobre" style="grid-column: 18; grid-row: 7;">
-            <span class="atomic-number">118</span>
-            <span class="symbol">Og</span>
-            <span class="name">Oganessônio</span>
-            <span class="mass">(294)</span>
-        </div>
-    </div>
-
+        const table = document.getElementById('table');
+        
+        // Loop para construir dinamicamente as divs HTML de cada elemento
+        elements.forEach(el => {
+            const div = document.createElement('div');
+            div.className = `element ${el[6]}`;
+            div.style.gridColumn = el[4];
+            div.style.gridRow = el[5];
+            
+            div.innerHTML = `
+                <span class="atomic-number">${el[0]}</span>
+                <span class="symbol">${el[1]}</span>
+                <span class="name">${el[2]}</span>
+                <span class="mass">${el[3]}</span>
+            `;
+            table.appendChild(div);
+        });
+    </script>
 </body>
 </html>
