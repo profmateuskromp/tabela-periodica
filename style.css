@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Responsividade: Garante que a tabela não quebre em telas de celulares */
+.table-container {
+    width: 100%;
+    max-width: 1250px;
+    overflow-x: auto; /* Adiciona barra de rolagem horizontal se a tela for menor que a tabela */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 65px);
+    grid-template-rows: repeat(10, 75px);
+    gap: 4px;
+    min-width: 1200px; /* Garante que as 18 colunas mantenham o tamanho correto */
+    margin: 0 auto;
+}
+
+.element {
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.element:hover {
+    transform: scale(1.1);
+    z-index: 10;
+    border-color: #ffffff;
+}
+
+.atomic-number {
+    font-size: 8px;
+    text-align: left;
+}
+
+.symbol {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.name {
+    font-size: 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mass {
+    font-size: 7px;
+    color: #ccc;
+}
+
+/* Estilização das cores por categoria dos elementos */
+.nao-metal { background-color: #2e5c31; }
+.gas-nobre { background-color: #1d4e68; }
+.metal-alcalino { background-color: #7c4a18; }
+.metal-alcalino-terroso { background-color: #7c7718; }
+.metal-transicao { background-color: #681d42; }
+.outros-metais { background-color: #2b4c5c; }
+.semimetal { background-color: #1d6852; }
+.halogenio { background-color: #4a1d68; }
+.lantanideo { background-color: #5c2b57; }
+.actinidio { background-color: #5c2b36; }

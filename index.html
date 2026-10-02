@@ -4,95 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabela Periódica Completa</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        .periodic-table {
-            display: grid;
-            grid-template-columns: repeat(18, 65px);
-            grid-template-rows: repeat(10, 75px);
-            gap: 4px;
-        }
-        .element {
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 4px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            font-size: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .element:hover {
-            transform: scale(1.1);
-            z-index: 10;
-            border-color: #fff;
-        }
-        .atomic-number { font-size: 8px; text-align: left; }
-        .symbol { font-size: 16px; font-weight: bold; }
-        .name { font-size: 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .mass { font-size: 7px; color: #ccc; }
-
-        /* Cores por Categoria */
-        .nao-metal { background-color: #2e5c31; }
-        .gas-nobre { background-color: #1d4e68; }
-        .metal-alcalino { background-color: #7c4a18; }
-        .metal-alcalino-terroso { background-color: #7c7718; }
-        .metal-transicao { background-color: #681d42; }
-        .outros-metais { background-color: #2b4c5c; }
-        .semimetal { background-color: #1d6852; }
-        .halogenio { background-color: #4a1d68; }
-        .lantanideo { background-color: #5c2b57; }
-        .actinidio { background-color: #5c2b36; }
-    </style>
+    <!-- Vinculando o CSS externo -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <h1>Tabela Periódica dos Elementos</h1>
-    <div class="periodic-table" id="table"></div>
+    
+    <!-- Container que permite a rolagem horizontal em telas menores -->
+    <div class="table-container">
+        <div class="periodic-table" id="table"></div>
+    </div>
 
-    <script>
-        // Dados compactados de todos os 118 elementos [Nº Atômico, Símbolo, Nome, Massa, Coluna, Linha, Classe]
-        const elements = [
-            [1,"H","Hidrogênio","1.008",1,1,"nao-metal"],[2,"He","Hélio","4.0026",18,1,"gas-nobre"],
-            [3,"Li","Lítio","6.94",1,2,"metal-alcalino"],[4,"Be","Berílio","9.0122",2,2,"metal-alcalino-terroso"],[5,"B","Boro","10.81",13,2,"semimetal"],[6,"C","Carbono","12.011",14,2,"nao-metal"],[7,"N","Nitrogênio","14.007",15,2,"nao-metal"],[8,"O","Oxigênio","15.999",16,2,"nao-metal"],[9,"F","Flúor","18.998",17,2,"halogenio"],[10,"Ne","Neônio","20.180",18,2,"gas-nobre"],
-            [11,"Na","Sódio","22.990",1,3,"metal-alcalino"],[12,"Mg","Magnésio","24.305",2,3,"metal-alcalino-terroso"],[13,"Al","Alumínio","26.982",13,3,"outros-metais"],[14,"Si","Silício","28.085",14,3,"semimetal"],[15,"P","Fósforo","30.974",15,3,"nao-metal"],[16,"S","Enxofre","32.06",16,3,"nao-metal"],[17,"Cl","Cloro","35.45",17,3,"halogenio"],[18,"Ar","Argônio","39.948",18,3,"gas-nobre"],
-            [19,"K","Potássio","39.098",1,4,"metal-alcalino"],[20,"Ca","Cálcio","40.078",2,4,"metal-alcalino-terroso"],[21,"Sc","Escândio","44.956",3,4,"metal-transicao"],[22,"Ti","Titânio","47.867",4,4,"metal-transicao"],[23,"V","Vanádio","50.942",5,4,"metal-transicao"],[24,"Cr","Cromo","51.996",6,4,"metal-transicao"],[25,"Mn","Manganês","54.938",7,4,"metal-transicao"],[26,"Fe","Ferro","55.845",8,4,"metal-transicao"],[27,"Co","Cobalto","58.933",9,4,"metal-transicao"],[28,"Ni","Níquel","58.693",10,4,"metal-transicao"],[29,"Cu","Cobre","63.546",11,4,"metal-transicao"],[30,"Zn","Zinco","65.38",12,4,"metal-transicao"],[31,"Ga","Gálio","69.723",13,4,"outros-metais"],[32,"Ge","Germânio","72.630",14,4,"semimetal"],[33,"As","Arsênio","74.922",15,4,"semimetal"],[34,"Se","Selênio","78.971",16,4,"nao-metal"],[35,"Br","Bromo","79.904",17,4,"halogenio"],[36,"Kr","Criptônio","83.798",18,4,"gas-nobre"],
-            [37,"Rb","Rubídio","85.468",1,5,"metal-alcalino"],[38,"Sr","Estrôncio","87.62",2,5,"metal-alcalino-terroso"],[39,"Y","Ítrio","88.906",3,5,"metal-transicao"],[40,"Zr","Zircônio","91.224",4,5,"metal-transicao"],[41,"Nb","Nióbio","92.906",5,5,"metal-transicao"],[42,"Mo","Molibidênio","95.95",6,5,"metal-transicao"],[43,"Tc","Tecnécio","(98)",7,5,"metal-transicao"],[44,"Ru","Rutênio","101.07",8,5,"metal-transicao"],[45,"Rh","Ródio","102.91",9,5,"metal-transicao"],[46,"Pd","Paládio","106.42",10,5,"metal-transicao"],[47,"Ag","Prata","107.87",11,5,"metal-transicao"],[48,"Cd","Cádmio","112.41",12,5,"metal-transicao"],[49,"In","Índio","114.82",13,5,"outros-metais"],[50,"Sn","Estanho","118.71",14,5,"outros-metais"],[51,"Sb","Antimônio","121.76",15,5,"semimetal"],[52,"Te","Telúrio","127.60",16,5,"semimetal"],[53,"I","Iodo","126.90",17,5,"halogenio"],[54,"Xe","Xenônio","131.29",18,5,"gas-nobre"],
-            [55,"Cs","Césio","132.91",1,6,"metal-alcalino"],[56,"Ba","Bário","137.33",2,6,"metal-alcalino-terroso"],[57,"La","Lantânio","138.91",4,9,"lantanideo"],[58,"Ce","Cério","140.12",5,9,"lantanideo"],[59,"Pr","Praseodímio","140.91",6,9,"lantanideo"],[60,"Nd","Neodímio","144.24",7,9,"lantanideo"],[61,"Pm","Promécio","(145)",8,9,"lantanideo"],[62,"Sm","Samário","150.36",9,9,"lantanideo"],[63,"Eu","Európio","151.96",10,9,"lantanideo"],[64,"Gd","Gadolínio","157.25",11,9,"lantanideo"],[65,"Tb","Térbio","158.93",12,9,"lantanideo"],[66,"Dy","Disprósio","162.50",13,9,"lantanideo"],[67,"Ho","Hólmio","164.93",14,9,"lantanideo"],[68,"Er","Érbio","167.26",15,9,"lantanideo"],[69,"Tm","Túlio","168.93",16,9,"lantanideo"],[70,"Yb","Itérbio","173.05",17,9,"lantanideo"],[71,"Lu","Lutécio","174.97",18,9,"lantanideo"],[72,"Hf","Háfnio","178.49",4,6,"metal-transicao"],[73,"Ta","Tântalo","180.95",5,6,"metal-transicao"],[74,"W","Tungstênio","183.84",6,6,"metal-transicao"],[75,"Re","Rênio","186.21",7,6,"metal-transicao"],[76,"Os","Ósmio","190.23",8,6,"metal-transicao"],[77,"Ir","Irídio","192.22",9,6,"metal-transicao"],[78,"Pt","Platina","195.08",10,6,"metal-transicao"],[79,"Au","Ouro","196.97",11,6,"metal-transicao"],[80,"Hg","Mercúrio","200.59",12,6,"metal-transicao"],[81,"Tl","Tálio","204.38",13,6,"outros-metais"],[82,"Pb","Chumbo","207.2",14,6,"outros-metais"],[83,"Bi","Bismuto","208.98",15,6,"outros-metais"],[84,"Po","Polônio","(209)",16,6,"semimetal"],[85,"At","Astato","(210)",17,6,"halogenio"],[86,"Rn","Radônio","(222)",18,6,"gas-nobre"],
-            [87,"Fr","Frâncio","(223)",1,7,"metal-alcalino"],[88,"Ra","Rádio","(226)",2,7,"metal-alcalino-terroso"],[89,"Ac","Actínio","(227)",4,10,"actinidio"],[90,"Th","Tório","232.04",5,10,"actinidio"],[91,"Pa","Protactínio","231.04",6,10,"actinidio"],[92,"U","Urânio","238.03",7,10,"actinidio"],[93,"Np","Netúnio","(237)",8,10,"actinidio"],[94,"Pu","Plutônio","(244)",9,10,"actinidio"],[95,"Am","Amerício","(243)",10,10,"actinidio"],[96,"Cm","Cúrio","(247)",11,10,"actinidio"],[97,"Bk","Berquélio","(247)",12,10,"actinidio"],[98,"Cf","Califórnio","(251)",13,10,"actinidio"],[99,"Es","Einstênio","(252)",14,10,"actinidio"],[100,"Fm","Férmio","(257)",15,10,"actinidio"],[101,"Md","Mendelévio","(258)",16,10,"actinidio"],[102,"No","Nobélio","(259)",17,10,"actinidio"],[103,"Lr","Laurêncio","(262)",18,10,"actinidio"],[104,"Rf","Ruthenfórdio","(267)",4,7,"metal-transicao"],[105,"Db","Dúbnio","(268)",5,7,"metal-transicao"],[106,"Sg","Seabórgio","(269)",6,7,"metal-transicao"],[107,"Bh","Bório","(270)",7,7,"metal-transicao"],[108,"Hs","Hássio","(269)",8,7,"metal-transicao"],[109,"Mt","Meitnério","(278)",9,7,"metal-transicao"],[110,"Ds","Darmstádio","(281)",10,7,"metal-transicao"],[111,"Rg","Roentgênio","(282)",11,7,"metal-transicao"],[112,"Cn","Copernício","(285)",12,7,"metal-transicao"],[113,"Nh","Nhônio","(286)",13,7,"outros-metais"],[114,"Fl","Fleróvio","(289)",14,7,"outros-metais"],[115,"Mc","Moscóvio","(290)",15,7,"outros-metais"],[116,"Lv","Livermório","(293)",16,7,"outros-metais"],[117,"Ts","Tenesso","(294)",17,7,"halogenio"],[118,"Og","Oganessônio","(294)",18,7,"gas-nobre"]
-        ];
-
-        // Adiciona as caixas indicativas de grupo La-Lu e Ac-Lr nas colunas vazias
-        elements.push(["57-71","La-Lu","Lantanídeos","-",3,6,"lantanideo"]);
-        elements.push(["89-103","Ac-Lr","Actinídeos","-",3,7,"actinidio"]);
-
-        const table = document.getElementById('table');
-        
-        // Loop para construir dinamicamente as divs HTML de cada elemento
-        elements.forEach(el => {
-            const div = document.createElement('div');
-            div.className = `element ${el[6]}`;
-            div.style.gridColumn = el[4];
-            div.style.gridRow = el[5];
-            
-            div.innerHTML = `
-                <span class="atomic-number">${el[0]}</span>
-                <span class="symbol">${el[1]}</span>
-                <span class="name">${el[2]}</span>
-                <span class="mass">${el[3]}</span>
-            `;
-            table.appendChild(div);
-        });
-    </script>
+    <!-- Vinculando o JavaScript externo -->
+    <script href="script.js" src="script.js"></script>
 </body>
 </html>
