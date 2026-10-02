@@ -11,14 +11,12 @@ body {
 
 h1 {
     margin-bottom: 20px;
-    text-align: center;
 }
 
-/* Responsividade: Garante que a tabela não quebre em telas de celulares */
 .table-container {
     width: 100%;
     max-width: 1250px;
-    overflow-x: auto; /* Adiciona barra de rolagem horizontal se a tela for menor que a tabela */
+    overflow-x: auto;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -28,12 +26,11 @@ h1 {
     grid-template-columns: repeat(18, 65px);
     grid-template-rows: repeat(10, 75px);
     gap: 4px;
-    min-width: 1200px; /* Garante que as 18 colunas mantenham o tamanho correto */
+    min-width: 1200px;
     margin: 0 auto;
 }
 
 .element {
-    color: #121212 !important;
     border: 1px solid #333;
     border-radius: 4px;
     padding: 4px;
@@ -44,6 +41,7 @@ h1 {
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s, border-color 0.2s;
+    color: #121212 !important; /* Texto escuro para contraste com tons pastéis */
 }
 
 .element:hover {
@@ -74,14 +72,14 @@ h1 {
     color: #444444 !important;
 }
 
-/* Estilização das cores por categoria dos elementos */
-.nao-metal { background-color: #7fa99b; color: #121212; }
-.gas-nobre { background-color: #a0c4ff; color: #121212; }
-.metal-alcalino { background-color: #ffadad; color: #121212; }
-.metal-alcalino-terroso { background-color: #ffd166; color: #121212; }
-.metal-transicao { background-color: #ffc6ff; color: #121212; }
-.outros-metais { background-color: #bdb2ff; color: #121212; }
-.semimetal { background-color: #9bf6ff; color: #121212; }
-.halogenio { background-color: #caffbf; color: #121212; }
-.lantanideo { background-color: #e8aeff; color: #121212; }
-.actinidio { background-color: #ffc4d6; color: #121212; }
+/* Categorias em Tons Pastéis */
+.nao-metal { background-color: #7fa99b; }
+.gas-nobre { background-color: #a0c4ff; }
+.metal-alcalino { background-color: #ffadad; }
+.metal-alcalino-terroso { background-color: #ffd166; }
+.metal-transicao { background-color: #ffc6ff; }
+.outros-metais { background-color: #bdb2ff; }
+.semimetal { background-color: #9bf6ff; }
+.halogenio { background-color: #caffbf; }
+.lantanideo { background-color: #e8aeff; }
+.actinidio { background-color: #ffc4d6; }
