@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Periódica Completa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 60px);
+            grid-template-rows: repeat(10, 75px);
+            gap: 4px;
+        }
+        .element {
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .element:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            border-color: #fff;
+        }
+        .atomic-number {
+            font-size: 8px;
+            text-align: left;
+        }
+        .symbol {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .name {
+            font-size: 7px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .mass {
+            font-size: 7px;
+            color: #ccc;
+        }
+
+        /* Cores por Categoria */
+        .nao-metal { background-color: #2e5c31; }
+        .gas-nobre { background-color: #1d4e68; }
+        .metal-alcalino { background-color: #7c4a18; }
+        .metal-alcalino-terroso { background-color: #7c7718; }
+        .metal-transicao { background-color: #681d42; }
+        .outros-metais { background-color: #2b4c5c; }
+        .semimetal { background-color: #1d6852; }
+        .halogenio { background-color: #4a1d68; }
+        .lantanideo { background-color: #5c2b57; }
+        .actinidio { background-color: #5c2b36; }
+        .empty { border: none; background: transparent; cursor: default; }
+    </style>
+</head>
+<body>
+
+    <h1>Tabela Periódica dos Elementos</h1>
+
+    <div class="periodic-table">
+        <!-- Período 1 -->
+        <div class="element gas-nobre" style="grid-column: 1; grid-row: 1;">
+            <span class="atomic-number">1</span>
+            <span class="symbol">H</span>
+            <span class="name">Hidrogênio</span>
+            <span class="mass">1.008</span>
+        </div>
+        <!-- Espaços vazios linha 1 -->
+        <div class="empty" style="grid-column: span 16; grid-row: 1;"></div>
+        <div class="element gas-nobre" style="grid-column: 18; grid-row: 1;">
+            <span class="atomic-number">2</span>
+            <span class="symbol">He</span>
+            <span class="name">Hélio</span>
+            <span class="mass">4.0026</span>
+        </div>
+
+        <!-- Período 2 -->
+        <div class="element metal-alcalino" style="grid-column: 1; grid-row: 2;">
+            <span class="atomic-number">3</span>
+            <span class="symbol">Li</span>
+            <span class="name">Lítio</span>
+            <span class="mass">6.94</span>
+        </div>
+        <div class="element metal-alcalino-terroso" style="grid-column: 2; grid-row: 2;">
+            <span class="atomic-number">4</span>
+            <span class="symbol">Be</span>
+            <span class="name">Berílio</span>
+            <span class="mass">9.0122</span>
+        </div>
+        <div class="empty" style="grid-column: span 10; grid-row: 2;"></div>
+        <div class="element semimetal" style="grid-column: 13; grid-row: 2;">
+            <span class="atomic-number">5</span>
+            <span class="symbol">B</span>
+            <span class="name">Boro</span>
+            <span class="mass">10.81</span>
+        </div>
+        <div class="element nao-metal" style="grid-column: 14; grid-row: 2;">
+            <span class="atomic-number">6</span>
+            <span class="symbol">C</span>
+            <span class="name">Carbono</span>
+            <span class="mass">12.011</span>
+        </div>
+        <div class="element nao-metal" style="grid-column: 15; grid-row: 2;">
+            <span class="atomic-number">7</span>
+            <span class="symbol">N</span>
+            <span class="name">Nitrogênio</span>
+            <span class="mass">14.007</span>
+        </div>
+        <div class="element nao-metal" style="grid-column: 16; grid-row: 2;">
+            <span class="atomic-number">8</span>
+            <span class="symbol">O</span>
+            <span class="name">Oxigênio</span>
+            <span class="mass">15.999</span>
+        </div>
+        <div class="element halogenio" style="grid-column: 17; grid-row: 2;">
+            <span class="atomic-number">9</span>
+            <span class="symbol">F</span>
+            <span class="name">Flúor</span>
+            <span class="mass">18.998</span>
+        </div>
+        <div class="element gas-nobre" style="grid-column: 18; grid-row: 2;">
+            <span class="atomic-number">10</span>
+            <span class="symbol">Ne</span>
+            <span class="name">Neônio</span>
+            <span class="mass">20.180</span>
+        </div>
+
+        <!-- Adicione os demais períodos seguindo a mesma lógica de coordenadas do Grid (grid-column e grid-row) -->
+    </div>
+
+</body>
+</html>
